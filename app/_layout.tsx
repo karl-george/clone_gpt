@@ -1,15 +1,13 @@
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
+import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import * as SecureStore from 'expo-secure-store';
-import { useFonts } from 'expo-font';
-import { useEffect } from 'react';
 
-const CLERK_PUBLISHABLE_KEY = process.env
-  .EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY as string;
-
+const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 // Cache the Clerk JWT
 const tokenCache = {
   async getToken(key: string) {
@@ -35,10 +33,9 @@ const InitialLayout = () => {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
-
-  const router = useRouter();
   const { isLoaded, isSignedIn } = useAuth();
   const segments = useSegments();
+  const router = useRouter();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -51,30 +48,36 @@ const InitialLayout = () => {
     }
   }, [loaded]);
 
-  if (!loaded || !isLoaded) {
-    return <Slot />;
-  }
-
   useEffect(() => {
     if (!isLoaded) return;
+
     const inAuthGroup = segments[0] === '(auth)';
+
     if (isSignedIn && !inAuthGroup) {
-      // Bring user to authed group
       router.replace('/(auth)/');
-    } else if (!isSignedIn && inAuthGroup) {
-      // Kick the user out
+    } else if (!isSignedIn) {
       router.replace('/');
     }
   }, [isSignedIn]);
 
+  if (!loaded || !isLoaded) {
+    return <Slot />;
+  }
+
   return (
     <Stack>
-      <Stack.Screen name='index' options={{ headerShown: false }} />
+      <Stack.Screen
+        name='index'
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name='login'
         options={{
           presentation: 'modal',
           title: '',
+
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
               <Ionicons name='close-outline' size={28} />
@@ -82,14 +85,15 @@ const InitialLayout = () => {
           ),
         }}
       />
+      <Stack.Screen name='(auth)' options={{ headerShown: false }} />
     </Stack>
   );
 };
 
-const RootLayoutNavigation = () => {
+const RootLayoutNav = () => {
   return (
     <ClerkProvider
-      publishableKey={CLERK_PUBLISHABLE_KEY}
+      publishableKey={CLERK_PUBLISHABLE_KEY!}
       tokenCache={tokenCache}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -99,4 +103,4 @@ const RootLayoutNavigation = () => {
   );
 };
 
-export default RootLayoutNavigation;
+export default RootLayoutNav;
