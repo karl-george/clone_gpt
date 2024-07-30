@@ -2,6 +2,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { defaultStyles } from '@/constants/Styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Colors from '@/constants/Colors';
+import { Link } from 'expo-router';
 
 const BottomLoginSheet = () => {
   const { bottom } = useSafeAreaInsets();
@@ -12,6 +14,44 @@ const BottomLoginSheet = () => {
         <Ionicons name='logo-apple' size={14} style={styles.btnIcon} />
         <Text style={styles.btnLightText}>Continue with Apple</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={[defaultStyles.btn, styles.btnDark]}>
+        <Ionicons
+          name='logo-google'
+          size={16}
+          style={styles.btnIcon}
+          color={'#fff'}
+        />
+        <Text style={styles.btnDarkText}>Continue with Google</Text>
+      </TouchableOpacity>
+      <Link
+        href={{
+          pathname: '/login',
+          params: {
+            type: 'register',
+          },
+        }}
+        asChild
+        style={[defaultStyles.btn, styles.btnDark]}
+      >
+        <TouchableOpacity>
+          <Ionicons name='mail' size={20} style={styles.btnIcon} color='#fff' />
+          <Text style={styles.btnDarkText}>Sign up with Email</Text>
+        </TouchableOpacity>
+      </Link>
+      <Link
+        href={{
+          pathname: '/login',
+          params: {
+            type: 'login',
+          },
+        }}
+        asChild
+        style={[defaultStyles.btn, styles.btnDark]}
+      >
+        <TouchableOpacity>
+          <Text style={styles.btnDarkText}>Login</Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 };
@@ -32,6 +72,17 @@ const styles = StyleSheet.create({
   },
   btnLightText: {
     fontSize: 20,
+  },
+  btnDark: {
+    backgroundColor: Colors.grey,
+  },
+  btnDarkText: {
+    color: '#fff',
+    fontSize: 20,
+  },
+  btnOutline: {
+    borderWidth: 3,
+    borderColor: Colors.grey,
   },
   btnIcon: {
     paddingRight: 6,
