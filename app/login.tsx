@@ -17,14 +17,18 @@ import { defaultStyles } from '../constants/Styles';
 const Page = () => {
   const { type } = useLocalSearchParams<{ type: string }>();
   const [loading, setLoading] = useState(false);
-  const [emailAddress, setEmailAddress] = useState('');
-  const [password, setPassword] = useState('');
+  const [emailAddress, setEmailAddress] = useState();
+  const [password, setPassword] = useState();
+
+  const onSignUpPress = async () => {};
+
+  const onLoginPress = async () => {};
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={1}
-      style={styles.container}
+      keyboardVerticalOffset={70}
+      style={[styles.container]}
     >
       {loading && (
         <View style={defaultStyles.loadingOverlay}>
@@ -44,23 +48,29 @@ const Page = () => {
           autoCapitalize='none'
           placeholder='Email'
           value={emailAddress}
-          onChangeText={setEmailAddress}
+          onChangeText={() => setEmailAddress}
         />
         <TextInput
           style={styles.inputField}
           autoCapitalize='none'
           placeholder='Password'
           value={password}
-          onChangeText={setPassword}
+          onChangeText={() => setPassword}
           secureTextEntry
         />
       </View>
       {type === 'login' ? (
-        <TouchableOpacity style={[defaultStyles.btn, styles.btnPrimary]}>
+        <TouchableOpacity
+          style={[defaultStyles.btn, styles.btnPrimary]}
+          onPress={onLoginPress}
+        >
           <Text>Login</Text>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity style={[defaultStyles.btn, styles.btnPrimary]}>
+        <TouchableOpacity
+          style={[defaultStyles.btn, styles.btnPrimary]}
+          onPress={onSignUpPress}
+        >
           <Text>Create Account</Text>
         </TouchableOpacity>
       )}
