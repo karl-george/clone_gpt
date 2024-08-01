@@ -1,5 +1,9 @@
 import Colors from '@/constants/Colors';
 import { FontAwesome6, Ionicons } from '@expo/vector-icons';
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+} from '@react-navigation/drawer';
 import { DrawerActions } from '@react-navigation/native';
 import { Link, useNavigation } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
@@ -7,10 +11,45 @@ import React from 'react';
 import {
   Image,
   StyleSheet,
+  Text,
+  TextInput,
   TouchableOpacity,
   useWindowDimensions,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+export const CustomDrawerContent = (props: any) => {
+  const { bottom, top } = useSafeAreaInsets();
+
+  return (
+    <View style={{ flex: 1, marginTop: top }}>
+      <View style={{ backgroundColor: '#fff', paddingBottom: 16 }}>
+        <View style={styles.searchSection}>
+          <Ionicons
+            style={styles.searchIcon}
+            name='search'
+            size={20}
+            color={Colors.grey}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder='Search'
+            underlineColorAndroid={'transparent'}
+          />
+        </View>
+      </View>
+      <DrawerContentScrollView
+        contentContainerStyle={{
+          paddingTop: 0,
+        }}
+        {...props}
+      >
+        <DrawerItemList {...props} />
+      </DrawerContentScrollView>
+    </View>
+  );
+};
 
 const Layout = () => {
   const navigation = useNavigation();
@@ -18,6 +57,7 @@ const Layout = () => {
 
   return (
     <Drawer
+      drawerContent={CustomDrawerContent}
       screenOptions={{
         headerLeft: () => (
           <TouchableOpacity
@@ -124,6 +164,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
+  },
+  searchSection: {
+    marginHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.input,
+    borderRadius: 10,
+    height: 34,
+  },
+  searchIcon: {
+    padding: 6,
+  },
+  input: {
+    flex: 1,
+    paddingTop: 8,
+    paddingRight: 8,
+    paddingBottom: 8,
+    paddingLeft: 0,
+    alignItems: 'center',
+    color: '#424242',
   },
 });
 
