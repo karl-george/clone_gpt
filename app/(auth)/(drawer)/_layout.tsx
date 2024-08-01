@@ -47,6 +47,23 @@ export const CustomDrawerContent = (props: any) => {
       >
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
+
+      <View style={{ paddingBottom: bottom + 6, padding: 16 }}>
+        <Link href={'/(auth)/(modal)/settings'} asChild>
+          <TouchableOpacity style={styles.footer}>
+            <Image
+              source={require('@/assets/images/logo-dark.png')}
+              style={styles.avatar}
+            />
+            <Text style={styles.username}>Karl George</Text>
+            <Ionicons
+              name='ellipsis-horizontal'
+              size={24}
+              color={Colors.greyLight}
+            />
+          </TouchableOpacity>
+        </Link>
+      </View>
     </View>
   );
 };
@@ -185,6 +202,21 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     alignItems: 'center',
     color: '#424242',
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+  },
+  username: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
