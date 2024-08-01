@@ -1,13 +1,51 @@
 import Colors from '@/constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import { FontAwesome6, Ionicons } from '@expo/vector-icons';
+import { DrawerActions } from '@react-navigation/native';
+import { Link, useNavigation } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 
 const Layout = () => {
+  const navigation = useNavigation();
+  const dimensions = useWindowDimensions();
+
   return (
-    <Drawer>
+    <Drawer
+      screenOptions={{
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            style={{ marginLeft: 16 }}
+          >
+            <FontAwesome6 name='grip-lines' size={20} color={Colors.grey} />
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          backgroundColor: Colors.light,
+        },
+        headerShadowVisible: false,
+        drawerActiveBackgroundColor: Colors.selected,
+        drawerActiveTintColor: '#000',
+        drawerInactiveTintColor: '#000',
+        drawerItemStyle: {
+          borderRadius: 12,
+        },
+        drawerLabelStyle: {
+          marginLeft: -20,
+        },
+        drawerStyle: {
+          width: dimensions.width * 0.86,
+        },
+        overlayColor: 'rgba(0, 0, 0, 0.2)',
+      }}
+    >
       <Drawer.Screen
         name='(chat)/new'
         getId={() => Math.random().toString()}
