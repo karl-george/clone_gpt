@@ -1,9 +1,10 @@
 import HeaderDropDown from '@/components/HeaderDropDown';
+import MessageInput from '@/components/MessageInput';
 import { defaultStyles } from '@/constants/Styles';
 import { useAuth } from '@clerk/clerk-expo';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { Button, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 
 const Page = () => {
   const [gptVersion, setGptVersion] = useState('3.5');
@@ -29,12 +30,16 @@ const Page = () => {
           ),
         }}
       />
-      <Button
-        title='Sign out'
-        onPress={() => {
-          signOut();
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <Text>Hi</Text>
+        <Button
+          title='Sign out'
+          onPress={() => {
+            signOut();
+          }}
+        />
+      </View>
+      <MessageInput />
     </View>
   );
 };
