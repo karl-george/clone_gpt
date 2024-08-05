@@ -4,11 +4,21 @@ import { defaultStyles } from '@/constants/Styles';
 import { useAuth } from '@clerk/clerk-expo';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import {
+  Button,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  View
+} from 'react-native';
 
 const Page = () => {
   const [gptVersion, setGptVersion] = useState('3.5');
   const { signOut } = useAuth();
+
+  const getCompletion = () => {
+    console.log('Getting completion');
+  };
 
   return (
     <View style={defaultStyles.pageContainer}>
@@ -39,7 +49,13 @@ const Page = () => {
           }}
         />
       </View>
-      <MessageInput />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={70}
+        style={{ position: 'absolute', bottom: 0, left: 0, width: '100%' }}
+      >
+        <MessageInput onShouldSend={getCompletion} />
+      </KeyboardAvoidingView>
     </View>
   );
 };
