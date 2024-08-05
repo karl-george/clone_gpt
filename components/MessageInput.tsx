@@ -12,7 +12,7 @@ export type MessageInputProps = {
 
 const ATouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
-const MessageInput = () => {
+const MessageInput = ({ onShouldSend }: MessageInputProps) => {
   const [message, setMessage] = useState('');
   const { bottom } = useSafeAreaInsets();
   const expanded = useSharedValue(0);
@@ -21,7 +21,10 @@ const MessageInput = () => {
 
   const collapseItems = () => {};
 
-  const onSend = () => {};
+  const onSend = () => {
+    onShouldSend(message);
+    setMessage('');
+  };
 
   return (
     <BlurView
