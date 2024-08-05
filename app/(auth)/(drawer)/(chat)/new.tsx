@@ -29,7 +29,7 @@ const DUMMY_MESSAGES: Message[] = [
 
 const Page = () => {
   const [gptVersion, setGptVersion] = useState('3.5');
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(DUMMY_MESSAGES);
   const [height, setHeight] = useState(0);
   const { signOut } = useAuth();
 
