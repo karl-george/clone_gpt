@@ -1,6 +1,8 @@
 import HeaderDropDown from '@/components/HeaderDropDown';
+import MessageIdeas from '@/components/MessageIdeas';
 import MessageInput from '@/components/MessageInput';
 import { defaultStyles } from '@/constants/Styles';
+import { Message } from '@/utils/interfaces';
 import { useAuth } from '@clerk/clerk-expo';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
@@ -9,11 +11,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   Text,
-  View
+  View,
 } from 'react-native';
 
 const Page = () => {
   const [gptVersion, setGptVersion] = useState('3.5');
+  const [messages, setMessages] = useState<Message[]>([]);
   const { signOut } = useAuth();
 
   const getCompletion = () => {
@@ -41,7 +44,6 @@ const Page = () => {
         }}
       />
       <View style={{ flex: 1 }}>
-        <Text>Hi</Text>
         <Button
           title='Sign out'
           onPress={() => {
@@ -54,6 +56,7 @@ const Page = () => {
         keyboardVerticalOffset={70}
         style={{ position: 'absolute', bottom: 0, left: 0, width: '100%' }}
       >
+        {messages.length === 0 && <MessageIdeas onSelectCard={getCompletion} />}
         <MessageInput onShouldSend={getCompletion} />
       </KeyboardAvoidingView>
     </View>
