@@ -8,8 +8,10 @@ import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import {
   Button,
+  Image,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
   Text,
   View,
 } from 'react-native';
@@ -28,10 +30,16 @@ const DUMMY_MESSAGES: Message[] = [
 const Page = () => {
   const [gptVersion, setGptVersion] = useState('3.5');
   const [messages, setMessages] = useState<Message[]>([]);
+  const [height, setHeight] = useState(0);
   const { signOut } = useAuth();
 
   const getCompletion = () => {
     console.log('Getting completion');
+  };
+
+  const onLayout = (event: any) => {
+    const { height } = event.nativeEvent.layout;
+    setHeight(height);
   };
 
   return (
@@ -54,8 +62,15 @@ const Page = () => {
           ),
         }}
       />
-      <View style={{ flex: 1 }}>
-        
+      <View style={{ flex: 1 }} onLayout={onLayout}>
+        {messages.length === 0 && (
+          <View style={[styles.logoContainer, { marginTop: height / 2 - 100 }]}>
+            <Image
+              source={require('@/assets/images/logo-white.png')}
+              style={styles.image}
+            />
+          </View>
+        )}
       </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -68,5 +83,22 @@ const Page = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  logoContainer: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    backgroundColor: '#000',
+    borderRadius: 50,
+  },
+  image: {
+    width: 30,
+    height: 30,
+    resizeMode: 'cover',
+  },
+});
 
 export default Page;
