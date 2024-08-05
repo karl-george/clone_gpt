@@ -2,7 +2,7 @@ import HeaderDropDown from '@/components/HeaderDropDown';
 import MessageIdeas from '@/components/MessageIdeas';
 import MessageInput from '@/components/MessageInput';
 import { defaultStyles } from '@/constants/Styles';
-import { Message } from '@/utils/interfaces';
+import { Message, Role } from '@/utils/interfaces';
 import { useAuth } from '@clerk/clerk-expo';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
@@ -13,6 +13,17 @@ import {
   Text,
   View,
 } from 'react-native';
+
+const DUMMY_MESSAGES: Message[] = [
+  {
+    role: Role.Bot,
+    content: 'Hello, I am CloneGPT. How can I help you today?',
+  },
+  {
+    role: Role.User,
+    content: 'I need help with React Native',
+  },
+];
 
 const Page = () => {
   const [gptVersion, setGptVersion] = useState('3.5');
@@ -44,12 +55,7 @@ const Page = () => {
         }}
       />
       <View style={{ flex: 1 }}>
-        <Button
-          title='Sign out'
-          onPress={() => {
-            signOut();
-          }}
-        />
+        
       </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
