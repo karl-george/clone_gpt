@@ -1,9 +1,11 @@
+import ChatMessage from '@/components/ChatMessage';
 import HeaderDropDown from '@/components/HeaderDropDown';
 import MessageIdeas from '@/components/MessageIdeas';
 import MessageInput from '@/components/MessageInput';
 import { defaultStyles } from '@/constants/Styles';
 import { Message, Role } from '@/utils/interfaces';
 import { useAuth } from '@clerk/clerk-expo';
+import { FlashList } from '@shopify/flash-list';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -23,7 +25,8 @@ const DUMMY_MESSAGES: Message[] = [
   },
   {
     role: Role.User,
-    content: 'I need help with React Native',
+    content:
+      'I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. ',
   },
 ];
 
@@ -71,6 +74,11 @@ const Page = () => {
             />
           </View>
         )}
+        <FlashList
+          data={messages}
+          renderItem={({ item }) => <ChatMessage {...item} />}
+          estimatedItemSize={400}
+        />
       </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
