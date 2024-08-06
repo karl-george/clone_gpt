@@ -7,7 +7,7 @@ import { Message, Role } from '@/utils/interfaces';
 import { Storage } from '@/utils/Storage';
 import { FlashList } from '@shopify/flash-list';
 import { Redirect, Stack } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -16,6 +16,7 @@ import {
   View,
 } from 'react-native';
 import { useMMKVString } from 'react-native-mmkv';
+import OpenAI from 'react-native-openai';
 
 const DUMMY_MESSAGES: Message[] = [
   {
@@ -41,9 +42,40 @@ const Page = () => {
     return <Redirect href={'/(auth)/(modal)/settings'} />;
   }
 
-  const getCompletion = () => {
+  const openAI = useMemo(
+    () => new OpenAI({ apiKey: key, organization: org }),
+    []
+  );
+
+  const getCompletion = async (message: string) => {
     console.log('Getting completion');
+    if (messages.length === 0) {
+      // Create chat later, store to DB
+    }
+
+    setMessages([
+      ...messages,
+      { role: Role.User, content: message },
+      { role: Role.Bot, content: '' },
+    ]);
+
+    openAI.chat.stream({
+      messages: [{ role: 'user', content: message }],
+      model: gptVersion === '4' ? 'gpt-4' : 'gpt-3.5-turbo',
+    });
   };
+
+  useEffect(() => {
+    const handleMessage = (payload: any) => {
+      console.log('Message received');
+    };
+
+    openAI.chat.addListener('onChatMessageReceived', handleMessage);
+
+    return () => {
+      openAI.chat.removeListener('onChatMessageReceived');
+    };
+  }, [openAI]);
 
   const onLayout = (event: any) => {
     const { height } = event.nativeEvent.layout;
