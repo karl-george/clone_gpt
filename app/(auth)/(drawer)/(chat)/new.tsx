@@ -4,57 +4,20 @@ import MessageIdeas from '@/components/MessageIdeas';
 import MessageInput from '@/components/MessageInput';
 import { defaultStyles } from '@/constants/Styles';
 import { Message, Role } from '@/utils/interfaces';
-import { useAuth } from '@clerk/clerk-expo';
+import { Storage } from '@/utils/Storage';
 import { FlashList } from '@shopify/flash-list';
-import { Stack } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  Button,
   Image,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
+import { useMMKVString } from 'react-native-mmkv';
 
 const DUMMY_MESSAGES: Message[] = [
-  {
-    role: Role.Bot,
-    content: 'Hello, I am CloneGPT. How can I help you today?',
-  },
-  {
-    role: Role.User,
-    content:
-      'I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. ',
-  },
-  {
-    role: Role.Bot,
-    content: 'Hello, I am CloneGPT. How can I help you today?',
-  },
-  {
-    role: Role.User,
-    content:
-      'I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. ',
-  },
-  {
-    role: Role.Bot,
-    content: 'Hello, I am CloneGPT. How can I help you today?',
-  },
-  {
-    role: Role.User,
-    content:
-      'I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. ',
-  },
-  {
-    role: Role.Bot,
-    content: 'Hello, I am CloneGPT. How can I help you today?',
-  },
-  {
-    role: Role.User,
-    content:
-      'I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. ',
-  },
   {
     role: Role.Bot,
     content: 'Hello, I am CloneGPT. How can I help you today?',
@@ -67,10 +30,16 @@ const DUMMY_MESSAGES: Message[] = [
 ];
 
 const Page = () => {
-  const [gptVersion, setGptVersion] = useState('3.5');
-  const [messages, setMessages] = useState<Message[]>(DUMMY_MESSAGES);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [height, setHeight] = useState(0);
-  const { signOut } = useAuth();
+
+  const [key, setKey] = useMMKVString('apiKey', Storage);
+  const [organisation, setOrganisation] = useMMKVString('org', Storage);
+  const [gptVersion, setGptVersion] = useMMKVString('gptVersion', Storage);
+
+  if (!key || key === '' || !organisation || organisation === '') {
+    return <Redirect href={'/(auth)/(modal)/settings'} />;
+  }
 
   const getCompletion = () => {
     console.log('Getting completion');
