@@ -34,10 +34,10 @@ const Page = () => {
   const [height, setHeight] = useState(0);
 
   const [key, setKey] = useMMKVString('apiKey', Storage);
-  const [organisation, setOrganisation] = useMMKVString('org', Storage);
+  const [org, setOrg] = useMMKVString('org', Storage);
   const [gptVersion, setGptVersion] = useMMKVString('gptVersion', Storage);
 
-  if (!key || key === '' || !organisation || organisation === '') {
+  if (!key || key === '' || !org || org === '') {
     return <Redirect href={'/(auth)/(modal)/settings'} />;
   }
 
