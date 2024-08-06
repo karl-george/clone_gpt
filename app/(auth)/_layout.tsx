@@ -20,18 +20,6 @@ const Layout = () => {
             backgroundColor: Colors.selected,
           },
           headerTitleAlign: 'center',
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={() => router.back()}
-              style={{
-                backgroundColor: Colors.greyLight,
-                borderRadius: 20,
-                padding: 4,
-              }}
-            >
-              <Ionicons name='close-outline' size={20} color={Colors.grey} />
-            </TouchableOpacity>
-          ),
         }}
       />
     </Stack>
