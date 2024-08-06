@@ -28,6 +28,42 @@ const DUMMY_MESSAGES: Message[] = [
     content:
       'I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. ',
   },
+  {
+    role: Role.Bot,
+    content: 'Hello, I am CloneGPT. How can I help you today?',
+  },
+  {
+    role: Role.User,
+    content:
+      'I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. ',
+  },
+  {
+    role: Role.Bot,
+    content: 'Hello, I am CloneGPT. How can I help you today?',
+  },
+  {
+    role: Role.User,
+    content:
+      'I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. ',
+  },
+  {
+    role: Role.Bot,
+    content: 'Hello, I am CloneGPT. How can I help you today?',
+  },
+  {
+    role: Role.User,
+    content:
+      'I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. ',
+  },
+  {
+    role: Role.Bot,
+    content: 'Hello, I am CloneGPT. How can I help you today?',
+  },
+  {
+    role: Role.User,
+    content:
+      'I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. I need help with React Native. ',
+  },
 ];
 
 const Page = () => {
@@ -78,6 +114,8 @@ const Page = () => {
           data={messages}
           renderItem={({ item }) => <ChatMessage {...item} />}
           estimatedItemSize={400}
+          contentContainerStyle={{ paddingBottom: 150, paddingTop: 20 }}
+          keyboardDismissMode='on-drag'
         />
       </View>
       <KeyboardAvoidingView
