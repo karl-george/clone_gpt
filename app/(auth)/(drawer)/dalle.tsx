@@ -35,7 +35,7 @@ const DUMMY_MESSAGES = [
 ];
 
 const Page = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(DUMMY_MESSAGES);
   const [height, setHeight] = useState(0);
 
   const [key, setKey] = useMMKVString('apiKey', Storage);

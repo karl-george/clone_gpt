@@ -1,7 +1,15 @@
 import Colors from '@/constants/Colors';
 import { Message, Role } from '@/utils/interfaces';
 import React from 'react';
-import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import * as ContextMenu from 'zeego/context-menu';
 
 const ChatMessage = ({
   content,
@@ -10,6 +18,16 @@ const ChatMessage = ({
   prompt,
   loading,
 }: Message & { loading?: boolean }) => {
+  const contextItems = [
+    { title: 'Copy', systemIcon: 'doc.on.doc', action: () => {} },
+    {
+      title: 'Save to Photos',
+      systemIcon: 'arrow.down.to.line',
+      action: () => {},
+    },
+    { title: 'Share', systemIcon: 'square.and.arrow.up', action: () => {} },
+  ];
+
   return (
     <View style={styles.row}>
       {role === Role.Bot ? (
@@ -34,7 +52,23 @@ const ChatMessage = ({
       )}
       <>
         {content === '' && imageUrl ? (
-          <Image source={{ uri: imageUrl }} style={styles.previewImage} />
+          <ContextMenu.Root>
+            <ContextMenu.Trigger>
+              <Pressable>
+                <Image source={{ uri: imageUrl }} style={styles.previewImage} />
+              </Pressable>
+            </ContextMenu.Trigger>
+            <ContextMenu.Content>
+              {contextItems.map((item, index) => (
+                <ContextMenu.Item key={item.title} onSelect={item.action}>
+                  <ContextMenu.ItemTitle>{item.title}</ContextMenu.ItemTitle>
+                  <ContextMenu.ItemIcon
+                    ios={{ name: item.systemIcon, pointSize: 18 }}
+                  />
+                </ContextMenu.Item>
+              ))}
+            </ContextMenu.Content>
+          </ContextMenu.Root>
         ) : (
           <Text style={styles.text}>{content}</Text>
         )}
