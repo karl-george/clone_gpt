@@ -68,6 +68,20 @@ const Page = () => {
   useEffect(() => {
     const handleMessage = (payload: any) => {
       console.log('Message received');
+      setMessages((messages) => {
+        const newMessage = payload.choices[0].delta.content;
+        if (newMessage) {
+          messages[messages.length - 1].content += newMessage;
+          return [...messages];
+        }
+
+        if (payload.choices[0]?.finishReason) {
+          // Save the message
+          console.log('Stream ended');
+        }
+
+        return messages;
+      });
     };
 
     openAI.chat.addListener('onChatMessageReceived', handleMessage);
