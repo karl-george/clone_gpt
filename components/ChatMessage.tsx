@@ -1,4 +1,9 @@
 import Colors from '@/constants/Colors';
+import {
+  copyImageToClipboard,
+  downloadAndSaveImage,
+  shareImage,
+} from '@/utils/Image';
 import { Message, Role } from '@/utils/interfaces';
 import React from 'react';
 import {
@@ -19,13 +24,21 @@ const ChatMessage = ({
   loading,
 }: Message & { loading?: boolean }) => {
   const contextItems = [
-    { title: 'Copy', systemIcon: 'doc.on.doc', action: () => {} },
+    {
+      title: 'Copy',
+      systemIcon: 'doc.on.doc',
+      action: () => copyImageToClipboard(imageUrl!),
+    },
     {
       title: 'Save to Photos',
       systemIcon: 'arrow.down.to.line',
-      action: () => {},
+      action: () => downloadAndSaveImage(imageUrl!),
     },
-    { title: 'Share', systemIcon: 'square.and.arrow.up', action: () => {} },
+    {
+      title: 'Share',
+      systemIcon: 'square.and.arrow.up',
+      action: () => shareImage(imageUrl!),
+    },
   ];
 
   return (
