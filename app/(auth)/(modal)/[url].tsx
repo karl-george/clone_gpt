@@ -1,8 +1,12 @@
-import { View, Text, StyleSheet } from 'react-native';
-import React from 'react';
-import { useLocalSearchParams } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import DropDownMenu from '@/components/DropDownMenu';
+import { downloadAndSaveImage, shareImage } from '@/utils/Image';
+import { Ionicons, Octicons } from '@expo/vector-icons';
 import { ImageZoom } from '@likashefqet/react-native-image-zoom';
+import { BlurView } from 'expo-blur';
+import { Stack, useLocalSearchParams } from 'expo-router';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Page = () => {
   const { url, prompt } = useLocalSearchParams<{
@@ -16,8 +20,23 @@ const Page = () => {
     console.log('copy prompt');
   };
 
+  const handlePresentModalPress = () => {};
+
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <DropDownMenu
+              items={[
+                { key: '1', title: 'View prompt', icon: 'info.cirlce' },
+                { key: '2', title: 'Learn more', icon: 'questionmark.cirlce' },
+              ]}
+              onSelect={handlePresentModalPress}
+            />
+          ),
+        }}
+      />
       <ImageZoom
         uri={url}
         style={styles.image}
@@ -29,6 +48,41 @@ const Page = () => {
         isDoubleTapEnabled
         resizeMode='contain'
       />
+
+      <BlurView
+        intensity={95}
+        tint={'dark'}
+        style={[styles.blurView, { paddingBottom: bottom }]}
+      >
+        <View style={styles.row}>
+          <TouchableOpacity style={{ alignItems: 'center' }}>
+            <Ionicons
+              name='chatbubble-ellipses-outline'
+              size={24}
+              color='white'
+            />
+            <Text style={styles.btnText}>Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ alignItems: 'center' }}>
+            <Ionicons name='brush-outline' size={24} color='white' />
+            <Text style={styles.btnText}>Select</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ alignItems: 'center' }}
+            onPress={() => downloadAndSaveImage(url!)}
+          >
+            <Octicons name='download' size={24} color='white' />
+            <Text style={styles.btnText}>Save</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ alignItems: 'center' }}
+            onPress={() => shareImage(url!)}
+          >
+            <Octicons name='share' size={24} color='white' />
+            <Text style={styles.btnText}>Share</Text>
+          </TouchableOpacity>
+        </View>
+      </BlurView>
     </View>
   );
 };
@@ -38,11 +92,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#111',
   },
   image: {
     width: '100%',
     height: '100%',
+  },
+  blurView: {
+    width: '100%',
+    bottom: 0,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 12,
+    paddingTop: 6,
   },
 });
 
