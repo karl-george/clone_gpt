@@ -22,6 +22,20 @@ const Layout = () => {
           headerTitleAlign: 'center',
         }}
       />
+      <Stack.Screen
+        name='(modal)/[url]'
+        options={{
+          headerTitle: '',
+          presentation: 'fullScreenModal',
+          headerTransparent: true,
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+          },
+          headerBlurEffect: 'dark',
+          headerTitleAlign: 'center',
+        }}
+      />
     </Stack>
   );
 };
