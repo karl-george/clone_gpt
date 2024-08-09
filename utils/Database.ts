@@ -1,5 +1,6 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 import { Message, Role } from './interfaces';
+import * as FileSystem from 'expo-file-system';
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   // Log DB path for debugging
