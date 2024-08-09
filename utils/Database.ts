@@ -1,5 +1,5 @@
 import { SQLiteDatabase } from 'expo-sqlite';
-import { Message, Role } from './interfaces';
+import { Chat, Message, Role } from './interfaces';
 import * as FileSystem from 'expo-file-system';
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
@@ -49,7 +49,7 @@ export const addChat = async (db: SQLiteDatabase, title: string) => {
 };
 
 export const getChats = async (db: SQLiteDatabase) => {
-  return await db.getAllAsync('SELECT * FROM chats');
+  return await db.getAllAsync<Chat>('SELECT * FROM chats');
 };
 
 export const addMessage = async (
