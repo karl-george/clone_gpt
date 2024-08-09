@@ -3,13 +3,15 @@ import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 import {
   DrawerContentScrollView,
   DrawerItemList,
+  useDrawerStatus,
 } from '@react-navigation/drawer';
 import { DrawerActions } from '@react-navigation/native';
 import { Link, useNavigation } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
+  Keyboard,
   StyleSheet,
   Text,
   TextInput,
@@ -21,6 +23,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const CustomDrawerContent = (props: any) => {
   const { bottom, top } = useSafeAreaInsets();
+  const isDrawerOpen = useDrawerStatus() === 'open';
+
+  useEffect(() => {
+    Keyboard.dismiss();
+  }, [isDrawerOpen]);
 
   return (
     <View style={{ flex: 1, marginTop: top }}>
