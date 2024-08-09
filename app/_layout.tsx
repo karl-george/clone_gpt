@@ -55,7 +55,7 @@ const InitialLayout = () => {
 
     if (isSignedIn && !inAuthGroup) {
       // router.replace('/(auth)/(drawer)/(chat)/new');
-      router.replace('/(auth)/(drawer)/dalle');
+      router.replace('/(auth)/(drawer)/explore');
     } else if (!isSignedIn) {
       router.replace('/');
     }
