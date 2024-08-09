@@ -161,6 +161,28 @@ const Layout = () => {
           ),
         }}
       />
+
+      <Drawer.Screen
+        name='(chat)/[id]'
+        options={{
+          drawerItemStyle: {
+            display: 'none',
+          },
+          headerRight: () => (
+            <Link href='/(auth)/(drawer)/(chat)/new' push asChild>
+              <TouchableOpacity>
+                <Ionicons
+                  name='create-outline'
+                  size={24}
+                  color={Colors.grey}
+                  style={{ marginRight: 16 }}
+                />
+              </TouchableOpacity>
+            </Link>
+          ),
+        }}
+      />
+
       <Drawer.Screen
         name='dalle'
         options={{
