@@ -1,14 +1,18 @@
 import Colors from '@/constants/Colors';
+import { getChats } from '@/utils/Database';
+import { Chat } from '@/utils/interfaces';
 import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 import {
   DrawerContentScrollView,
+  DrawerItem,
   DrawerItemList,
   useDrawerStatus,
 } from '@react-navigation/drawer';
 import { DrawerActions } from '@react-navigation/native';
-import { Link, useNavigation } from 'expo-router';
+import { Link, useNavigation, useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
-import React, { useEffect } from 'react';
+import { useSQLiteContext } from 'expo-sqlite';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   Keyboard,
@@ -25,9 +29,21 @@ export const CustomDrawerContent = (props: any) => {
   const { bottom, top } = useSafeAreaInsets();
   const isDrawerOpen = useDrawerStatus() === 'open';
 
+  const [history, setHistory] = useState<Chat[]>([]);
+  const db = useSQLiteContext();
+  const router = useRouter();
+
   useEffect(() => {
+    if (isDrawerOpen) {
+      loadChats();
+    }
     Keyboard.dismiss();
   }, [isDrawerOpen]);
+
+  const loadChats = async () => {
+    const result = await getChats(db);
+    setHistory(result);
+  };
 
   return (
     <View style={{ flex: 1, marginTop: top }}>
@@ -53,6 +69,14 @@ export const CustomDrawerContent = (props: any) => {
         {...props}
       >
         <DrawerItemList {...props} />
+        {history.map((chat) => (
+          <DrawerItem
+            key={chat.id}
+            label={chat.title}
+            onPress={() => router.push(`/(auth)/(drawer)/(chat)/${chat.id}`)}
+            inactiveTintColor='#000'
+          ></DrawerItem>
+        ))}
       </DrawerContentScrollView>
 
       <View style={{ paddingBottom: bottom + 6, padding: 16 }}>
